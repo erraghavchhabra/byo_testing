@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Branding from "../../assets/img/Branding.jpg";
-import Packaging from "../../assets/img/Generative-Ai.jpg";
+import Packaging from "../../assets/img/Generative-AI.jpg";
 import Websites from "../../assets/img/Websites.jpg";
 import Signages from "../../assets/img/Digital-products.jpg";
 import Content from "../../assets/img/Content.jpg";
