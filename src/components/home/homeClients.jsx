@@ -12,7 +12,7 @@ import client10 from "../../assets/img/FisherhouseHome.png";
 const HomeClients = () => {
     return (
         <div>
-            <section className="client-sec">
+            <section className="client-sec"> 
                 <div className="container">
                     <ul className="list-inline client-ul">
                         <li>
