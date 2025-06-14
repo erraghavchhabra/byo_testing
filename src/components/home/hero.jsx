@@ -4,16 +4,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MainImg from "../../assets/img/main.svg";
 import MainFrame from "../../assets/img/main-frame.svg";
 import MainClock from "../../assets/img/clock.svg";
-import MainVideo from "../../assets/img/videoplayback.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Hero = () => {
+const Hero = ({ data }) => {
   const frameRef = useRef(null);
   const clockRef = useRef(null);
   const containerRef = useRef(null);
   const videoRef = useRef(null);
-  const mainImgRef = useRef(null);  // Reference for main image
+  const mainImgRef = useRef(null); // Reference for main image
 
   useEffect(() => {
     // Entry animation for images
@@ -41,7 +40,8 @@ const Hero = () => {
       start: "top bottom",
       end: "bottom top",
       scrub: true,
-      animation: gsap.timeline()
+      animation: gsap
+        .timeline()
         .to(frameRef.current, { x: -50 }, 0)
         .to(clockRef.current, { x: 50 }, 0),
     });
@@ -51,15 +51,15 @@ const Hero = () => {
       videoRef.current,
       { scale: 0.7, opacity: 0 }, // Initial state
       {
-        scale: 1,  // Final scale
+        scale: 1, // Final scale
         opacity: 1,
         duration: 0.5,
         ease: "power3.out",
         scrollTrigger: {
           trigger: videoRef.current,
-          start: "top 80%",  // When the video comes into view
+          start: "top 80%", // When the video comes into view
           end: "bottom top", // When the video is fully out of view
-          scrub: true,  // This makes the scale smooth as you scroll
+          scrub: true, // This makes the scale smooth as you scroll
         },
       }
     );
@@ -107,7 +107,8 @@ const Hero = () => {
           <div className="row">
             <div className="col-lg-8 my-auto">
               <h1 className="hero-h">
-                <span>Byo:</span> Unleashing Creativity in Branding and UX Design!
+                {data?.heroTitle ||
+                  "Byo: Unleashing Creativity in Branding and UX Design!"}
               </h1>
             </div>
             <div className="col-lg-4 my-auto">
@@ -144,11 +145,12 @@ const Hero = () => {
             preload="auto"
             className="video-element"
           >
-            <source src={MainVideo} type="video/mp4" />
+            {data?.introVideo?.asset?.url && (
+              <source src={data.introVideo.asset.url} type="video/mp4" />
+            )}
           </video>
         </div>
       </section>
-     
     </>
   );
 };

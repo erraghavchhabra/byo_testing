@@ -45,36 +45,35 @@ const services = [
   },
 ];
 
-const HomeAccordion = () => {
+const HomeAccordion = ({data}) => {
   const [activeAccordion, setActiveAccordion] = useState(null);
 
   const handleAccordionToggle = (id) => {
     setActiveAccordion(prev => prev === id ? null : id);
   };
-
+  const services = data?.services?.list || []
+  
   return (
     <section className="accordion-sec">
       <div className="container">
         <div className="row">
           <div className="col-lg-5 mb-4">
-            <h2 className="accordion-con">
-              We partner for your success journey, offering expert design excellence.
-              Entrust us with creativity, while you focus on vital project aspects.
-              Let's innovate together for your project's success!
+            <h2 className="accordion-con whitespace-pre-wrap">
+              {data?.services?.description}
             </h2>
           </div>
           <div className="col-lg-7">
             <div className="m-accordion">
               <div className="accordion" id="serviceAccordion">
                 {services.map((service, index) => {
-                  const isActive = activeAccordion === service.id;
+                  const isActive = activeAccordion === index;
                   return (
                     <div 
                       className={`accordion-item ${isActive ? 'active' : ''}`}
-                      key={service.id}
+                      key={index}
                     >
                       <img
-                        src={service.image}
+                        src={service?.image?.asset?.url}
                         className="img-fluid accord-img"
                         alt={service.title}
                         loading="lazy"
@@ -83,20 +82,20 @@ const HomeAccordion = () => {
                         <button
                           className={`accordion-button ${isActive ? '' : 'collapsed'}`}
                           type="button"
-                          onClick={() => handleAccordionToggle(service.id)}
+                          onClick={() => handleAccordionToggle(index)}
                           aria-expanded={isActive}
-                          aria-controls={service.id}
+                          aria-controls={index}
                         >
                           {service.title}
                         </button>
                       </h2>
                       <div
-                        id={service.id}
+                        id={index}
                         className={`accordion-collapse collapse ${isActive ? 'show' : ''}`}
                         aria-labelledby={`heading${index + 1}`}
                         data-bs-parent="#serviceAccordion"
                       >
-                        <div className="accordion-body">{service.content}</div>
+                        <div className="accordion-body">{service?.description}</div>
                       </div>
                     </div>
                   );
