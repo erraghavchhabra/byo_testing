@@ -1,5 +1,4 @@
 import React from "react";
-import slider1 from "../../assets/img/slider1.JPG";
 
 const DetailCarousel = ({data}) => {
   return (
