@@ -9,7 +9,7 @@ import Clients from "./pages/allClients";
 import Services from "./pages/allServices";
 import About from "./pages/about";
 import Contact from "./pages/contact";
-import PrivacyPolicy from "./pages/Privacy";
+import PrivacyPolicy from "./pages/privacy";
 import TermsConditions from "./pages/TermsConditions";
 import WorkDetail from "./pages/workDetail";
 import ScrollToTop from "./components/ScrollToTop";
