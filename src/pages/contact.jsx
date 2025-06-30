@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import AboutHero from "../components/aboutHero";
 import innAnimation from "../components/innAnimation";
-import ContactImg from "../assets/img/Contact.avif";
 import sanityClient from "../server/sanityClient";
 import { contactQuery } from "../server/querys";
+import SocialLinks from "../components/SocialLinks";
 const Contact = () => {
   const [data, setData] = useState(null);
   innAnimation();
@@ -35,22 +34,14 @@ const Contact = () => {
                 ))}
               </ul>
 
-              <ul class="social-ul con-social list-instyled list-inline">
-                {data?.socialLinks?.map((item, index) => (
-                  <li key={index} className="list-inline-item">
-                    <a
-                      href={item?.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <i className={`bi bi-${item?.name?.toLowerCase()}`}></i>
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <SocialLinks classNames="con-social" />
             </div>
             <div className="col-lg-5 offset-lg-2">
-              <img src={data?.imageUrl} className="img-fluid" alt={data?.title} />
+              <img
+                src={data?.imageUrl}
+                className="img-fluid"
+                alt={data?.title}
+              />
             </div>
           </div>
         </div>

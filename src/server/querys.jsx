@@ -191,7 +191,8 @@ export const homeProjectsQuery = `
     title,
     coverImage{
       asset->{url}
-    }
+    },
+    description,
   }
 `;
 
@@ -206,6 +207,7 @@ export const allProjectsQuery = `
     category->{
              name
     },
+    description
   }
 `;
 export const allCategoriesQuery = `
@@ -214,7 +216,7 @@ export const allCategoriesQuery = `
   }
 `;
 
- export const singleProjectQuery = `
+export const singleProjectQuery = `
     *[_type == "projects" && title == $title][0]{
       title,
       coverImage{asset->{url}},
@@ -298,4 +300,4 @@ export const allCategoriesQuery = `
         }
       }
     }
-  `
+  `;

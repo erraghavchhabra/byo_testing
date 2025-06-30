@@ -13,6 +13,8 @@ import PrivacyPolicy from "./pages/privacy";
 import TermsConditions from "./pages/TermsConditions";
 import WorkDetail from "./pages/workDetail";
 import ScrollToTop from "./components/ScrollToTop";
+import "aos/dist/aos.css"; // Import AOS CSS
+import AOS from "aos"; // Import AOS JS
 function App() {
   return (
     <>

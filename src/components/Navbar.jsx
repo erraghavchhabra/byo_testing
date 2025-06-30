@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/img/logo.svg";
+import SocialLinks from "./SocialLinks";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -12,24 +13,18 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-
-      // Normal scroll for background or effects
       setIsScrolled(scrollY > 100);
-
-      // Special white link logic on about page
-      if (location.pathname === "/about") {
-        setIsAboutTop(scrollY < 200);
-      } else {
-        setIsAboutTop(false);
-      }
+      setIsAboutTop(location.pathname === "/about" && scrollY < 200);
     };
 
-    handleScroll(); // Trigger on first load
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [location]);
 
   const toggleNavbar = () => setIsNavOpen(!isNavOpen);
+
+  const isActive = (path) => location.pathname === path;
 
   const handleMouseEnter = (index, e) => {
     const link = navRefs.current[index];
@@ -51,47 +46,33 @@ const Navbar = () => {
     link.classList.remove("hover-left", "hover-right");
   };
 
-  const isActive = (path) => location.pathname === path;
+  const navLinks = ["Work", "Clients", "Services", "About", "Contact"];
 
   return (
-    <nav
-      className={`navbar navbar-expand-lg fixed-top navbar-light bg-light ${
-        isScrolled ? "scrolled" : ""
-      } ${isAboutTop ? "white-links" : ""}`}
-    >
-      <div className="container">
-        <a className="navbar-brand" href="/">
-          <img src={logo} className="img-fluid h-logo" alt="logo" />
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={toggleNavbar}
-          aria-controls="navbarNav"
-          aria-expanded={isNavOpen}
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div
-          className={`collapse navbar-collapse ${isNavOpen ? "show" : ""}`}
-          id="navbarNav"
-        >
-          <ul className="navbar-nav ms-auto">
-            {["Work", "Clients", "Services", "About", "Contact"].map(
-              (label, index) => {
-                const path =
-                  label === "Work"
-                    ? "/work"
-                    : label === "Clients"
-                    ? "/clients"
-                    : label === "Services"
-                    ? "/services"
-                    : label === "About"
-                    ? "/about"
-                    : "/contact";
+    <>
+      <nav
+        className={`navbar fixed-top navbar-light ${
+          isScrolled ? "scrolled" : ""
+        } ${isAboutTop ? "white-links" : ""}`}
+      >
+        <div className="container d-flex justify-content-between align-items-center">
+          <a className="navbar-brand" href="/">
+            <img src={logo} className="img-fluid h-logo" alt="logo" />
+          </a>
+
+          {/* Toggler for mobile */}
+          <button className="custom-toggler" onClick={toggleNavbar}>
+            <div className={`bar bar1 ${isNavOpen ? "open" : ""}`}></div>
+            <div className={`bar bar2 ${isNavOpen ? "open" : ""}`}></div>
+          </button>
+
+          {/* Desktop Menu */}
+          <div className="desktop-menu d-none d-lg-block ms-auto">
+            <ul className="navbar-nav d-flex flex-row align-items-center">
+              {navLinks.map((label, index) => {
+                const path = `/${label.toLowerCase()}`;
                 return (
-                  <li className="nav-item" key={index}>
+                  <li className="nav-item mx-3" key={index}>
                     <Link
                       to={path}
                       className={`nav-link ${isActive(path) ? "active" : ""}`}
@@ -103,12 +84,46 @@ const Navbar = () => {
                     </Link>
                   </li>
                 );
-              }
-            )}
+              })}
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      <div className={`mobile-menu ${isNavOpen ? "open" : ""}`}>
+        <ul className="mobile-nav-list">
+          {navLinks.map((label, index) => {
+            const path = `/${label.toLowerCase()}`;
+            return (
+              <li key={index} className="mobile-nav-item">
+                <Link
+                  to={path}
+                  className={`mobile-nav-link ${
+                    isActive(path) ? "active" : ""
+                  }`}
+                  onClick={() => setIsNavOpen(false)}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="mob-email">
+          <ul className="list-inline cont-ul">
+            <li className="list-inline-item">
+              <p>Get in touch</p>
+              <a href="mailto:hey@byo.sa" className="view-btn">
+                <span>hey@byo.sa</span>
+              </a>
+            </li>
           </ul>
         </div>
+        <SocialLinks  classNames="nav-social"/>
       </div>
-    </nav>
+    </>
   );
 };
 

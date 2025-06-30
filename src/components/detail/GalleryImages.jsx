@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { CgClose } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const GalleryImages = ({ images }) => {
@@ -10,6 +11,40 @@ const GalleryImages = ({ images }) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const startPos = useRef({ x: 0, y: 0 });
+
+  // 💫 Scale all images once on first scroll
+useEffect(() => {
+  const triggers = [];
+
+  const imgs = document.querySelectorAll(".pro-img");
+
+  imgs.forEach((img, i) => {
+    const tl = gsap.fromTo(
+      img,
+      { scale: 0.7, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 1.3,
+        ease: "power3.out",
+        delay: i * 0.05,
+        scrollTrigger: {
+          trigger: img,
+          start: "top 85%",  // when the image hits 85% of viewport height
+          toggleActions: "play none none reverse",
+          once: false        // optional: only run once
+        },
+      }
+    );
+
+    triggers.push(tl.scrollTrigger);
+  });
+
+  return () => {
+    triggers.forEach((trigger) => trigger?.kill());
+  };
+}, [images]);
+
 
   const open = (url) => {
     setSelected(url);
@@ -55,7 +90,14 @@ const GalleryImages = ({ images }) => {
       <div className="container">
         <div className="row g-3">
           {images.map((img, i) => (
-            <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={i}>
+            <div
+              className={`col-12 ${
+                images.length === 1
+                  ? "col-lg-12"
+                  : "col-sm-6 col-md-6 col-lg-6"
+              }`}
+              key={i}
+            >
               <div
                 className="border rounded shadow-sm h-100"
                 style={{ cursor: "pointer" }}
@@ -64,8 +106,7 @@ const GalleryImages = ({ images }) => {
                 <img
                   src={img?.asset?.url}
                   alt={`Gallery ${i + 1}`}
-                  className="img-fluid w-100"
-                  style={{ objectFit: "cover", height: "250px" }}
+                  className="img-fluid pro-img w-100"
                 />
               </div>
             </div>
@@ -73,7 +114,6 @@ const GalleryImages = ({ images }) => {
         </div>
       </div>
 
-      {/* ─────── Modal with Framer Motion ─────── */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -119,7 +159,6 @@ const GalleryImages = ({ images }) => {
                   />
                 </div>
 
-                {/* Controls */}
                 <div className="position-absolute top-0 end-0 mt-3 me-3 d-flex flex-column gap-2">
                   <button className="btn btn-light p-2" onClick={close}>
                     <CgClose size={20} />

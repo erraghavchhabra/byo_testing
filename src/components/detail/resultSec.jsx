@@ -1,6 +1,8 @@
 import React from "react";
 import Art from "../../assets/img/art.png"
 const Result = ({data}) => {
+
+  
   return (
     <div>
       <section className="prob-sec result-sec">

@@ -28,6 +28,8 @@ const Home = () => {
 
     fetchGalleryImages();
   }, []);
+  console.log(15142 , projects);
+  
   return (
     <div>
       <Hero data={data} />
