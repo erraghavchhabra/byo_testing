@@ -3,7 +3,10 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 import { CgClose } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const GalleryImages = ({ images }) => {
   const [selected, setSelected] = useState(null);
@@ -12,39 +15,36 @@ const GalleryImages = ({ images }) => {
   const [isDragging, setIsDragging] = useState(false);
   const startPos = useRef({ x: 0, y: 0 });
 
-  // 💫 Scale all images once on first scroll
-useEffect(() => {
-  const triggers = [];
+  useEffect(() => {
+    const triggers = [];
 
-  const imgs = document.querySelectorAll(".pro-img");
+    const imgs = document.querySelectorAll(".pro-img");
 
-  imgs.forEach((img, i) => {
-    const tl = gsap.fromTo(
-      img,
-      { scale: 0.7, opacity: 0 },
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 1.3,
-        ease: "power3.out",
-        delay: i * 0.05,
-        scrollTrigger: {
-          trigger: img,
-          start: "top 85%",  // when the image hits 85% of viewport height
-          toggleActions: "play none none reverse",
-          once: false        // optional: only run once
-        },
-      }
-    );
+    imgs.forEach((img, i) => {
+      const tl = gsap.fromTo(
+        img,
+        { scale: 0.7, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          duration: 1.3,
+          ease: "power3.out",
+          delay: i * 0.05,
+          scrollTrigger: {
+            trigger: img,
+            start: "top 85%", // when the image hits 85% of viewport height
+            toggleActions: "play none none reverse",
+            once: false
+          },
+        }
+      );
+      triggers.push(tl.scrollTrigger);
+    });
 
-    triggers.push(tl.scrollTrigger);
-  });
-
-  return () => {
-    triggers.forEach((trigger) => trigger?.kill());
-  };
-}, [images]);
-
+    return () => {
+      triggers.forEach((trigger) => trigger?.kill());
+    };
+  }, [images]);
 
   const open = (url) => {
     setSelected(url);
@@ -92,9 +92,7 @@ useEffect(() => {
           {images.map((img, i) => (
             <div
               className={`col-12 ${
-                images.length === 1
-                  ? "col-lg-12"
-                  : "col-sm-6 col-md-6 col-lg-6"
+                images.length === 1 ? "col-lg-12" : "col-sm-6 col-md-6 col-lg-6"
               }`}
               key={i}
             >
