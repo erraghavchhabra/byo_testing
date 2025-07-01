@@ -16,6 +16,7 @@ import Loading from "../components/detail/Loading";
 
 import sanityClient from "../server/sanityClient";
 import { singleProjectQuery } from "../server/querys";
+import { ScrollTrigger } from "gsap/all";
 
 const WorkDetail = () => {
   const [data, setData] = useState(null);
@@ -25,20 +26,58 @@ const WorkDetail = () => {
   // 🌀 Page Overlay Animation on Entrance
   useEffect(() => {
     if (!loading && data) {
-      const tl = gsap.timeline();
+      // Animate each section on scroll
+      gsap.utils.toArray("section").forEach((section) => {
+        gsap.fromTo(
+          section,
+          { autoAlpha: 0, y: 50 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      });
 
-      tl.to(".page-wave-overlay", {
-        clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-        duration: 1.2,
-        ease: "power4.out",
-      }).to(".page-wave-overlay", {
-        autoAlpha: 0,
-        duration: 0.4,
-        ease: "power1.out",
-      }, "+=0.3");
+      // Animate titles
+      gsap.from(".inn-title", {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".inn-title",
+          start: "top 90%",
+          toggleActions: "play none none reverse",
+        },
+      });
+
+      // Animate paragraphs
+      gsap.from(".inn-p", {
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+        delay: 0.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".inn-p",
+          start: "top 90%",
+          toggleActions: "play none none reverse",
+        },
+      });
     }
-  }, [data, loading]);
-
+  }, [loading, data]);
+  useEffect(() => {
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
   // 📦 Fetch data on mount
   innAnimation();
   useEffect(() => {
@@ -139,8 +178,12 @@ const WorkDetail = () => {
             />
           )}
 
-          {data?.multiImages?.select === "slider" && <DetailCarousel data={data} />}
-          {data?.video?.asset?.url && <DetailVideo url={data?.video?.asset?.url} />}
+          {data?.multiImages?.select === "slider" && (
+            <DetailCarousel data={data} />
+          )}
+          {data?.video?.asset?.url && (
+            <DetailVideo url={data?.video?.asset?.url} />
+          )}
           {data?.services?.description && <ServicesSec data={data?.services} />}
 
           {data?.multiImages?.select === "gallery" && (
@@ -159,7 +202,9 @@ const WorkDetail = () => {
           )}
 
           {data?.results && <Result data={data?.results} />}
-          {data?.testimonials && <TestimonialSlider data={data?.testimonials} />}
+          {data?.testimonials && (
+            <TestimonialSlider data={data?.testimonials} />
+          )}
         </>
       )}
     </>
