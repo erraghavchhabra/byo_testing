@@ -517,7 +517,6 @@ a:hover {
   border-radius: 4px;
 }
 
-
 .project-box:hover .project-summary {
   opacity: 1;
   transform: translateY(0);
@@ -684,9 +683,9 @@ a:hover {
 .let-title {
   font-size: 70px;
   font-weight: 600;
-      transition: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+  transition: none !important;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 .mail-a.view-btn {
@@ -1653,15 +1652,15 @@ a:hover {
     font-size: 36px;
     margin-bottom: 10px;
   }
-.page-wave-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background-color: #ffffff; /* Or use #000000 for dark */
-  clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-  pointer-events: none;
-  transition: clip-path 1s ease-in-out;
-}
+  .page-wave-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: #ffffff; /* Or use #000000 for dark */
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+    pointer-events: none;
+    transition: clip-path 1s ease-in-out;
+  }
 
   .caps-sec {
     padding-top: 50px;
@@ -1700,7 +1699,7 @@ a:hover {
     font-size: 20px;
     line-height: 1.5;
   }
-  
+
   .detail-slider {
     margin-top: 60px;
     margin-bottom: 0px;

@@ -4,7 +4,6 @@ import { CgClose } from "react-icons/cg";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -34,7 +33,7 @@ const GalleryImages = ({ images }) => {
             trigger: img,
             start: "top 85%", // when the image hits 85% of viewport height
             toggleActions: "play none none reverse",
-            once: false
+            once: false,
           },
         }
       );

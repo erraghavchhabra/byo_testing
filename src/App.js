@@ -3,7 +3,6 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/home";
 import Work from "./pages/work";
 import "./App.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
 import Footer from "./components/Footer";
 import Clients from "./pages/allClients";
 import Services from "./pages/allServices";
