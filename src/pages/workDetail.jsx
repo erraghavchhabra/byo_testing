@@ -26,7 +26,7 @@ const WorkDetail = () => {
   // 🌀 Page Overlay Animation on Entrance
   useEffect(() => {
     if (!loading && data) {
-      // Animate each section on scroll
+      // Your animations...
       gsap.utils.toArray("section").forEach((section) => {
         gsap.fromTo(
           section,
@@ -45,34 +45,15 @@ const WorkDetail = () => {
         );
       });
 
-      // Animate titles
-      gsap.from(".inn-title", {
-        y: 40,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".inn-title",
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-      });
-
-      // Animate paragraphs
-      gsap.from(".inn-p", {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        delay: 0.2,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".inn-p",
-          start: "top 90%",
-          toggleActions: "play none none reverse",
-        },
-      });
+      // Delay ScrollTrigger refresh to ensure layout is stable
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          ScrollTrigger.refresh(); // ✅ solves first-scroll issue on Vercel
+        });
+      }, 300); // adjust if needed (e.g., 500ms if content is heavy)
     }
   }, [loading, data]);
+
   useEffect(() => {
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
