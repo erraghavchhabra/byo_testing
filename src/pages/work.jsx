@@ -90,11 +90,9 @@ const Work = () => {
           </div>
         </div>
 
-        <div className="container">
           <div className="tab-content mt-3">
             <HomeProjects data={projects} showViewButton={false} />
           </div>
-        </div>
       </section>
     </>
   );

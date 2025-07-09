@@ -44,7 +44,7 @@ const HomeProjects = ({ data, showViewButton = true }) => {
 
   return (
     <section className="client-sec" ref={projectRef}>
-      <div className="container">
+      <div className="container m-container">
         <div className="row project-row">
           {data?.map((item, index) => (
             <div key={index} className="col-lg-6">
@@ -62,7 +62,15 @@ const HomeProjects = ({ data, showViewButton = true }) => {
                     </div>
                   )}
                 </div>
-                <p>{item?.title}</p>
+                <div className="project-box-d">
+                  <p>{item?.title}</p>
+
+                  {item?.description && (
+                    <div className="pro-des">
+                      <span className="line-clamp-2">{item?.description}</span>
+                    </div>
+                  )}
+                </div>
               </Link>
             </div>
           ))}
