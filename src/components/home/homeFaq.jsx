@@ -1,48 +1,54 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import sanityClient from "../../server/sanityClient";
 import { faqQuery } from "../../server/querys";
 
 const FAQSection = () => {
   const [data, setData] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const contentRefs = useRef([]);
 
   useEffect(() => {
-    const fetchGalleryImages = async () => {
+    const fetchFaqs = async () => {
       const faq = await sanityClient.fetch(faqQuery);
       setData(faq);
     };
-
-    fetchGalleryImages();
+    fetchFaqs();
   }, []);
+
+  const toggleFAQ = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
 
   return (
     <section className="faq-section">
       <div className="faq-container">
         <h2 className="faq-title">{data?.sectionTitle || "FAQ"}</h2>
-        <div className="accordion" id="faqAccordion">
-          {data?.faqs?.map((faq, index) => {
-            const headingId = `heading-${index}`;
-            const collapseId = `collapse-${index}`;
 
+        <div className="accordion">
+          {data?.faqs?.map((faq, index) => {
+            const isActive = activeIndex === index;
             return (
               <div key={index} className="accordion-item">
-                <h2 className="accordion-header" id={headingId}>
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target={`#${collapseId}`}
-                    aria-expanded="false"
-                    aria-controls={collapseId}
-                  >
-                    {faq?.title}
-                    <i className="bi bi-chevron-right faq-icon"></i>
-                  </button>
-                </h2>
+                <button
+                  className={`accordion-button ${isActive ? "" : "collapsed"}`}
+                  onClick={() => toggleFAQ(index)}
+                >
+                  {faq?.title}
+                  <i
+                    className={`bi faq-icon ${
+                      isActive ? "bi-chevron-up" : "bi-chevron-down"
+                    }`}
+                  ></i>
+                </button>
+
                 <div
-                  id={collapseId}
-                  className="accordion-collapse collapse"
-                  aria-labelledby={headingId}
-                  data-bs-parent="#faqAccordion"
+                  className="accordion-collapse"
+                  ref={(el) => (contentRefs.current[index] = el)}
+                  style={{
+                    maxHeight: isActive
+                      ? `${contentRefs.current[index]?.scrollHeight}px`
+                      : "0px",
+                  }}
                 >
                   <div className="accordion-body">
                     <p className="whitespace-pre-wrap">{faq?.description}</p>

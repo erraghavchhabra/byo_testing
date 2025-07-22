@@ -1,6 +1,7 @@
 import React from "react";
 import Big from "../assets/img/big.avif";
 import HomeClients from "./home/homeClients";
+import TestimonialSlider from "./detail/detailestimonial";
 const Capabilities = ({ aboutData }) => {
   return (
     <div>
@@ -57,12 +58,14 @@ const Capabilities = ({ aboutData }) => {
           <h1 className="caps-h">Clients</h1>
         </div>
         <HomeClients />
-
+        <div className="ab-test">
+          <TestimonialSlider />
+        </div>
         <div className="container">
-          <h1 className="caps-h cap-space pt-0">Awards</h1>
+          <h1 className="caps-h cap-space ">Awards</h1>
           <div className="row">
             {aboutData?.capabilities?.awardsUrls?.map((item, index) => (
-              <div key={index} className="col-lg-3">
+              <div key={index} className="col-lg-3 col-md-4 col-4">
                 <div className="cap-award">
                   <img src={item} className="img-fluid" alt={index} />
                 </div>

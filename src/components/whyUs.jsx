@@ -92,7 +92,7 @@ const WhyByo = ({ aboutData }) => {
           <div className="why-box" key={index}>
             <div className="container">
               <div className="row">
-                <div className="col-lg-6 my-auto">
+                <div className="col-lg-6 order-lg-1 order-2 my-auto">
                   <h3 className="why-number">
                     {index + 1 < 10 ? "0" : ""}
                     {index + 1}
@@ -100,8 +100,8 @@ const WhyByo = ({ aboutData }) => {
                   <h4 className="why-title">{item.name}</h4>
                   <p className="whitespace-pre-wrap">{item.description}</p>
                 </div>
-                <div className="col-lg-5 offset-lg-1">
-                  <img src={item.imageUrl} className="img-fluid w-100" alt="" />
+                <div className="col-lg-5  order-lg-2 order-1 offset-lg-1">
+                  <img src={item.imageUrl} className="img-fluid img-x w-100" alt="" />
                 </div>
               </div>
             </div>

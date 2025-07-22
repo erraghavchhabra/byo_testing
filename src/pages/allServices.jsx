@@ -17,40 +17,46 @@ const ServiceSection = ({
   img1,
   img2,
   reverse,
-}) => (
-  <section className="serv-space">
-    <div className="container">
-      <div className="row">
-        <div className={`col-lg-5 ${reverse ? "order-lg-2" : ""}`}>
-          <div className="serv-con">
-            <h3 className="serv-h">{title}</h3>
-            <p className="whitespace-pre-wrap">{description}</p>
-            <ul className="list-unstyled">
-              {points?.map((p, i) => (
-                <li key={i}>{p?.name}</li>
-              ))}
-            </ul>
+}) => {
+  return (
+    <section className="serv-space">
+      <div className="container">
+        <div className="row">
+          {/* ✅ Content Column */}
+          <div className={`col-lg-5 ${reverse ? "order-lg-2" : ""}`}>
+            <div className="serv-con">
+              <h3 className="serv-h">{title}</h3>
+              <p className="whitespace-pre-wrap">{description}</p>
+              <ul className="list-unstyled">
+                {points?.map((p, i) => (
+                  <li key={i}>{p?.name}</li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </div>
-        <div className={`col-lg-7 ${reverse ? "order-lg-1" : ""}`}>
-          <div
-            className={`serv-img-box ${
-              reverse ? "serv-img-left" : "serv-img-right"
-            }`}
-          >
-            <img src={img1} className="img-fluid serv-icon" alt="" />
-            <img src={img2} className="img-fluid serv-img" alt="" />
+
+          {/* ✅ Image Column */}
+          <div className={`col-lg-7 ${reverse ? "order-lg-1" : ""}`}>
+            <div
+              className={`serv-img-box ${
+                reverse ? "serv-img-left" : "serv-img-right"
+              }`}
+            >
+              <img src={img1} className="img-fluid serv-icon" alt="" />
+              <img src={img2} className="img-fluid serv-img" alt="" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const Services = () => {
   const [servicesData, setServicesData] = useState(null);
 
   useEffect(() => {
+    // GSAP scroll animations
     gsap.utils.toArray(".serv-img-box, .serv-con").forEach((el) => {
       gsap.fromTo(
         el,
@@ -69,6 +75,7 @@ const Services = () => {
       );
     });
 
+    // Fetch data
     sanityClient.fetch(servicesQuery).then((data) => {
       const process = (s) => ({
         ...s,
@@ -88,6 +95,7 @@ const Services = () => {
       });
     });
   }, []);
+
   const data = [
     {
       title: servicesData?.branding?.title || "Branding",
@@ -101,8 +109,8 @@ const Services = () => {
       title: servicesData?.digitalProducts?.title || "Digital Products",
       description: servicesData?.digitalProducts?.description,
       points: servicesData?.digitalProducts?.capabilities,
-      img1: servicesData?.branding?.brandingImageUrl,
-      img2: servicesData?.branding?.imageUrl,
+      img1: servicesData?.digitalProducts?.brandingImageUrl,
+      img2: servicesData?.digitalProducts?.imageUrl,
       reverse: true,
     },
     {
@@ -133,6 +141,7 @@ const Services = () => {
 
   return (
     <div>
+      {/* ✅ Services Header */}
       <section className="inner-sec pb-0">
         <div className="container inn-container">
           <div className="row">
@@ -148,6 +157,7 @@ const Services = () => {
         </div>
       </section>
 
+      {/* ✅ Services List */}
       <div className="serv-holdder">
         {data.map((d, i) => (
           <ServiceSection
@@ -162,7 +172,8 @@ const Services = () => {
         ))}
       </div>
 
-      <Industries servicesData={servicesData}/>
+      {/* ✅ Industries Section */}
+      <Industries servicesData={servicesData} />
     </div>
   );
 };

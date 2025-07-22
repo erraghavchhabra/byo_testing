@@ -33,8 +33,8 @@ const Industries = ({ servicesData }) => {
   return (
     <section className="industries">
       <div className="container inn-container">
-        <div className="row justify-content-center">
-          <div className="col-lg-9">
+        <div className="row ">
+          <div className="col-lg-12">
             <div className="row">
               <div className="col-lg-6">
                 <h4 className="inn-title">

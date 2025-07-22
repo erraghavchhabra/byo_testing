@@ -42,9 +42,20 @@ const Footer = () => {
             <div className="row">
               <div className="col-lg-8 col-md-6">
                 <h3 className="let-title">{data?.title || "Let’s Talk"}</h3>
-                <a className="mail-a view-btn" href={`mailto:${email}`}>
-                  <span>{email}</span>
-                </a>
+                <ul className="list-unstyled mb-0">
+                  <li>
+                    <a className="mail-a view-btn" href={`mailto:${email}`}>
+                      <span>{email}</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a className="phne-a view-btn" href={`tel:+123 4567 890`}>
+                      <span>+123 4567 890</span>
+                    </a>
+                  </li>
+                </ul>
+
+
               </div>
               <div className="col-lg-4 col-md-6">
                 <ul className="quick-ul list-unstyled">

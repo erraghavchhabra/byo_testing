@@ -2,83 +2,90 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../assets/img/logo.svg";
 import SocialLinks from "./SocialLinks";
+import sanityClient from "../server/sanityClient";
+import { contactQuery } from "../server/querys";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hideNavbar, setHideNavbar] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isAboutTop, setIsAboutTop] = useState(false);
-  const navRefs = useRef([]);
+  const [data, setData] = useState(null);
+
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 100);
-      setIsAboutTop(location.pathname === "/about" && scrollY < 200);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [location]);
-
-  const toggleNavbar = () => setIsNavOpen(!isNavOpen);
-
-  const isActive = (path) => location.pathname === path;
-
-  const handleMouseEnter = (index, e) => {
-    const link = navRefs.current[index];
-    const rect = link.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const midpoint = rect.width / 2;
-
-    if (mouseX < midpoint) {
-      link.classList.add("hover-left");
-      link.classList.remove("hover-right");
-    } else {
-      link.classList.add("hover-right");
-      link.classList.remove("hover-left");
-    }
-  };
-
-  const handleMouseLeave = (index) => {
-    const link = navRefs.current[index];
-    link.classList.remove("hover-left", "hover-right");
-  };
 
   const navLinks = ["Work", "Clients", "Services", "About", "Contact"];
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await sanityClient.fetch(contactQuery);
+      setData(res);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+      const isAboutPage = location.pathname === "/about";
+
+      if (!isNavOpen) {
+        setIsScrolled(isAboutPage && currentScroll > 50);
+
+        if (currentScroll > lastScrollY.current && currentScroll > 10) {
+          setHideNavbar(true);
+        } else {
+          setHideNavbar(false);
+        }
+      }
+
+      lastScrollY.current = currentScroll <= 0 ? 0 : currentScroll;
+      ticking.current = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking.current) {
+        window.requestAnimationFrame(handleScroll);
+        ticking.current = true;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isNavOpen, location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = isNavOpen ? "hidden" : "";
+    return () => (document.body.style.overflow = "");
+  }, [isNavOpen]);
+
+  const isActive = (path) => location.pathname === path;
+
+  const navbarClass = `
+    navbar m-nav fixed-top
+    ${location.pathname === "/about" ? (isScrolled ? "scrolled" : "at-top") : ""}
+    ${hideNavbar ? "navbar-hidden" : "navbar-visible"}
+    ${isNavOpen ? "menu-open" : ""}
+  `;
+
   return (
     <>
-      <nav
-        className={`navbar fixed-top navbar-light ${
-          isScrolled ? "scrolled" : ""
-        } ${isAboutTop ? "white-links" : ""}`}
-      >
+      <nav className={navbarClass}>
         <div className="container d-flex justify-content-between align-items-center">
-          <a className="navbar-brand" href="/">
+          <Link className="navbar-brand" to="/">
             <img src={logo} className="img-fluid h-logo" alt="logo" />
-          </a>
+          </Link>
 
-          {/* Toggler for mobile */}
-          <button className="custom-toggler" onClick={toggleNavbar}>
-            <div className={`bar bar1 ${isNavOpen ? "open" : ""}`}></div>
-            <div className={`bar bar2 ${isNavOpen ? "open" : ""}`}></div>
-          </button>
-
-          {/* Desktop Menu */}
           <div className="desktop-menu d-none d-lg-block ms-auto">
             <ul className="navbar-nav d-flex flex-row align-items-center">
               {navLinks.map((label, index) => {
                 const path = `/${label.toLowerCase()}`;
                 return (
-                  <li className="nav-item mx-3" key={index}>
+                  <li className="nav-item" key={index}>
                     <Link
                       to={path}
                       className={`nav-link ${isActive(path) ? "active" : ""}`}
-                      ref={(el) => (navRefs.current[index] = el)}
-                      onMouseEnter={(e) => handleMouseEnter(index, e)}
-                      onMouseLeave={() => handleMouseLeave(index)}
                     >
                       {label}
                     </Link>
@@ -87,10 +94,17 @@ const Navbar = () => {
               })}
             </ul>
           </div>
+
+          <button
+            className={`custom-toggler ${isNavOpen ? "open" : ""}`}
+            onClick={() => setIsNavOpen(!isNavOpen)}
+          >
+            <span className="bar bar1"></span>
+            <span className="bar bar2"></span>
+          </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       <div className={`mobile-menu ${isNavOpen ? "open" : ""}`}>
         <ul className="mobile-nav-list">
           {navLinks.map((label, index) => {
@@ -110,18 +124,16 @@ const Navbar = () => {
             );
           })}
         </ul>
-
         <div className="mob-email">
-          <ul className="list-inline cont-ul">
-            <li className="list-inline-item">
-              <p>Get in touch</p>
-              <a href="mailto:hey@byo.sa" className="view-btn">
-                <span>hey@byo.sa</span>
-              </a>
-            </li>
-          </ul>
+          <p>Get in touch</p>
+          <a href="mailto:hey@byo.sa" className="view-btn">
+            <span>hey@byo.sa</span>
+          </a>
         </div>
-        <SocialLinks  classNames="nav-social"/>
+        <SocialLinks classNames="nav-social" />
+        <a href="#" className="mob-add view-btn">
+          <span>{data?.address || "Loading address..."}</span>
+        </a>
       </div>
     </>
   );

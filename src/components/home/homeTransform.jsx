@@ -84,22 +84,26 @@ const HomeTransform = ({ homeData }) => {
       )}
 
       <div className="m-swiper">
-        <Swiper
-          ref={swiperRef}
-          slidesPerView={3}
-          spaceBetween={20}
-          modules={[Navigation, Keyboard]}
-          keyboard={{ enabled: true }}
-          navigation={false}
-          loop={true}
-          speed={800}
-        >
-          {images?.images?.map((img, i) => (
-            <SwiperSlide key={i}>
-              <img src={img?.url} alt={img?.alt} className="img-fluid" />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+       <Swiper
+  ref={swiperRef}
+  slidesPerView={3}        // default for desktop
+  spaceBetween={20}
+  modules={[Navigation, Keyboard]}
+  keyboard={{ enabled: true }}
+  navigation={false}
+  loop={true}
+  speed={800}
+  breakpoints={{
+    0: { slidesPerView: 2, spaceBetween: 12 },     // ✅ Mobile (<768px)
+    768: { slidesPerView: 3, spaceBetween: 20 },   // ✅ Tablet & above
+  }}
+>
+  {images?.images?.map((img, i) => (
+    <SwiperSlide key={i}>
+      <img src={img?.url} alt={img?.alt} className="img-fluid" />
+    </SwiperSlide>
+  ))}
+</Swiper>
 
         {hoverDirection === "left" && (
           <div className="arrow left-arrow" style={{ top: `${cursorY}px` }}>

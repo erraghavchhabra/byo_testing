@@ -11,8 +11,9 @@ const Hero = ({ data }) => {
   const frameRef = useRef(null);
   const clockRef = useRef(null);
   const containerRef = useRef(null);
+  const videoWrapperRef = useRef(null);
   const videoRef = useRef(null);
-  const mainImgRef = useRef(null); // Reference for main image
+  const mainImgRef = useRef(null);
 
   useEffect(() => {
     // Entry animation for images
@@ -27,14 +28,14 @@ const Hero = ({ data }) => {
       { x: 0, opacity: 1, duration: 2, ease: "power3.out" }
     );
 
-    // Slide effect for Hero text (h1.hero-h)
+    // Slide effect for Hero text
     gsap.fromTo(
       ".hero-h",
-      { y: 100, opacity: 0 }, // Start off below the viewport and invisible
+      { y: 100, opacity: 0 },
       { y: 0, opacity: 1, duration: 2, ease: "power3.out" }
     );
 
-    // Scroll animation for images (Parallax)
+    // Parallax scroll for images
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top bottom",
@@ -46,112 +47,110 @@ const Hero = ({ data }) => {
         .to(clockRef.current, { x: 50 }, 0),
     });
 
-    // Video scale animation with ScrollTrigger
-    gsap.fromTo(
-      videoRef.current,
-      { scale: 0.7, opacity: 0 }, // Initial state
+    // Smooth FULL-WIDTH-like video reveal with delay
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: videoWrapperRef.current,
+        start: "top 85%",
+        end: "top 40%",
+        scrub: true,
+      },
+    });
+
+    // Width & opacity comes first
+    tl.fromTo(
+      videoWrapperRef.current,
       {
-        scale: 1, // Final scale
+        width: "70%",               // starts narrower
+        borderRadius: "0px",
+        opacity: 0.5,
+      },
+      {
+        width: "calc(100% - 30px)", // leaves 15px gap left & right
+        borderRadius: "0px",       // slight curve remains
         opacity: 1,
-        duration: 0.5,
         ease: "power3.out",
-        scrollTrigger: {
-          trigger: videoRef.current,
-          start: "top 80%", // When the video comes into view
-          end: "bottom top", // When the video is fully out of view
-          scrub: true, // This makes the scale smooth as you scroll
-        },
+        duration: 1.2,
       }
     );
 
-    // Mouse movement effect for main image
+    // Slightly delayed scaling for smoothness
+    tl.fromTo(
+      videoWrapperRef.current,
+      { scale: 0.9 },
+      {
+        scale: 1,
+        duration: 1.2,
+        ease: "power2.out",
+      },
+      ">-0.3" // starts a bit after width animates
+    );
+
+    // Mouse movement parallax effect
     const handleMouseMove = (e) => {
       const { clientX, clientY } = e;
       const x = clientX / window.innerWidth - 0.5;
       const y = clientY / window.innerHeight - 0.5;
 
-      // Apply movement to images based on mouse position
-      gsap.to(frameRef.current, {
-        x: x * 100,
-        y: y * 100,
-        duration: 0.3,
-        ease: "power3.out",
-      });
-      gsap.to(clockRef.current, {
-        x: x * -100,
-        y: y * -100,
-        duration: 0.3,
-        ease: "power3.out",
-      });
-      gsap.to(mainImgRef.current, {
-        x: x * 50,
-        y: y * 50,
-        duration: 0.3,
-        ease: "power3.out",
-      });
+      gsap.to(frameRef.current, { x: x * 100, y: y * 100, duration: 0.3, ease: "power3.out" });
+      gsap.to(clockRef.current, { x: x * -100, y: y * -100, duration: 0.3, ease: "power3.out" });
+      gsap.to(mainImgRef.current, { x: x * 50, y: y * 50, duration: 0.3, ease: "power3.out" });
     };
 
-    // Adding event listener for mouse movement
     window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      // Cleanup the event listener when component is unmounted
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
-    <>
-      <section className="hero-sec" ref={containerRef}>
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-8 my-auto">
-              <h1 className="hero-h">
-                {data?.heroTitle ||
-                  "Byo: Unleashing Creativity in Branding and UX Design!"}
-              </h1>
-            </div>
-            <div className="col-lg-4 my-auto">
-              <div className="main-images">
-                <img
-                  src={MainFrame}
-                  ref={frameRef}
-                  className="img-fluid main-frame"
-                  alt="Main Frame"
-                />
-                <img
-                  src={MainClock}
-                  ref={clockRef}
-                  className="img-fluid main-clock"
-                  alt="Main Clock"
-                />
-                <img
-                  src={MainImg}
-                  ref={mainImgRef}
-                  className="img-fluid main-img"
-                  alt="Main"
-                />
-              </div>
+    <section className="hero-sec" ref={containerRef}>
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-8 my-auto">
+            <h1 className="hero-h">
+              {data?.heroTitle || "Byo: Unleashing Creativity in Branding and UX Design!"}
+            </h1>
+          </div>
+          <div className="col-lg-4 my-auto">
+            <div className="main-images">
+              <img src={MainFrame} ref={frameRef} className="img-fluid main-frame" alt="Main Frame" />
+              <img src={MainClock} ref={clockRef} className="img-fluid main-clock" alt="Main Clock" />
+              <img src={MainImg} ref={mainImgRef} className="img-fluid main-img" alt="Main" />
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Video section */}
-        <div className="container-fluid video-wrapper" ref={videoRef}>
-          <video
-            muted
-            autoPlay
-            playsInline
-            preload="auto"
-            className="video-element"
-          >
-            {data?.introVideo?.asset?.url && (
-              <source src={data.introVideo.asset.url} type="video/mp4" />
-            )}
-          </video>
-        </div>
-      </section>
-    </>
+      {/* Video section with smooth scaling + gap */}
+      <div
+        ref={videoWrapperRef}
+        className="video-wrapper"
+        style={{
+          margin: "120px auto",
+          overflow: "hidden",
+          paddingInline: "0px", // ensures gap left & right
+          transformOrigin: "center center",
+        }}
+      >
+        <video
+          ref={videoRef}
+          muted
+          autoPlay
+          playsInline
+          preload="auto"
+          className="video-element"
+          style={{
+            width: "100%",
+            height: "auto",
+            display: "block",
+            borderRadius: "inherit",
+          }}
+        >
+          {data?.introVideo?.asset?.url && (
+            <source src={data.introVideo.asset.url} type="video/mp4" />
+          )}
+        </video>
+      </div>
+    </section>
   );
 };
 

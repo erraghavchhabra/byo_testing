@@ -23,7 +23,7 @@ const Counter = ({aboutData}) => {
           <div className="row">
             {
               data.map((item , index) => (
-                <div key={index} className="col-lg-3">
+                <div key={index} className="col-lg-3 col-6">
                   <div className="counter-box">
                     <h1 className="counter-number">{item.number}</h1>
                     <p>{item.title}</p>

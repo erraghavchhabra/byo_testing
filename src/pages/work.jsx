@@ -3,7 +3,7 @@ import HomeProjects from "../components/home/homeProjects";
 import innAnimation from "../components/innAnimation";
 import sanityClient from "../server/sanityClient";
 import { allCategoriesQuery, allProjectsQuery } from "../server/querys";
-
+import Archive from "../components/Archive";
 const Work = () => {
   const [activeTab, setActiveTab] = useState("all");
   const [allCategories, setAllCategories] = useState([]);
@@ -92,6 +92,13 @@ const Work = () => {
 
           <div className="tab-content mt-3">
             <HomeProjects data={projects} showViewButton={false} />
+          </div>
+      </section>
+
+      <section className="archive-sec">
+          <div className="container">
+           <h2 className="archive-title">Archive</h2>
+            <Archive projects={allProjects} />
           </div>
       </section>
     </>

@@ -39,8 +39,8 @@ const TestimonialSlider = ({ data }) => {
   return (
     <section className="testimonial-sec">
       <div className="container text-center">
-        <div className="row justify-content-center">
-          <div className="col-lg-9">
+        <div className="row ">
+          <div className="col-lg-10">
             <div className="position-relative">
               <Swiper
                 modules={[Navigation, Pagination, Autoplay]}
@@ -65,15 +65,7 @@ const TestimonialSlider = ({ data }) => {
                 {testimonialdata?.map((item, index) => (
                   <SwiperSlide key={index}>
                     <div className="testimonial-slide">
-                      <div className="test-img">
-                        <img
-                          src={item?.user?.profileUrl}
-                          alt={item?.user?.name}
-                          className="avatar-img"
-                        />
-                      </div>
-
-                      <div className="test-con">
+                       <div className="test-con">
                         <p className="testimonial-text whitespace-pre-wrap">
                           “ {item?.comment} ”
                         </p>
@@ -86,6 +78,15 @@ const TestimonialSlider = ({ data }) => {
                           )}
                         </div>
                       </div>
+                      <div className="test-img">
+                        <img
+                          src={item?.user?.profileUrl}
+                          alt={item?.user?.name}
+                          className="avatar-img"
+                        />
+                      </div>
+
+                     
                     </div>
                   </SwiperSlide>
                 ))}
