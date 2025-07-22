@@ -16,6 +16,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const navLinks = ["Work", "Clients", "Services", "About", "Contact"];
+  const isAboutPage = location.pathname === "/about"; // ✅ detect about page
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,11 +29,12 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScroll = window.scrollY;
-      const isAboutPage = location.pathname === "/about";
 
       if (!isNavOpen) {
-        setIsScrolled(isAboutPage && currentScroll > 50);
+        // ✅ applies to ALL pages: switch to scrolled only after scroll
+        setIsScrolled(currentScroll > 50);
 
+        // ✅ show/hide navbar based on scroll direction
         if (currentScroll > lastScrollY.current && currentScroll > 10) {
           setHideNavbar(true);
         } else {
@@ -64,7 +66,8 @@ const Navbar = () => {
 
   const navbarClass = `
     navbar m-nav fixed-top
-    ${location.pathname === "/about" ? (isScrolled ? "scrolled" : "at-top") : ""}
+    ${isScrolled ? "scrolled" : "at-top"}
+    ${isAboutPage ? "about-page" : ""}
     ${hideNavbar ? "navbar-hidden" : "navbar-visible"}
     ${isNavOpen ? "menu-open" : ""}
   `;
@@ -77,6 +80,7 @@ const Navbar = () => {
             <img src={logo} className="img-fluid h-logo" alt="logo" />
           </Link>
 
+          {/* Desktop Menu */}
           <div className="desktop-menu d-none d-lg-block ms-auto">
             <ul className="navbar-nav d-flex flex-row align-items-center">
               {navLinks.map((label, index) => {
@@ -95,6 +99,7 @@ const Navbar = () => {
             </ul>
           </div>
 
+          {/* Mobile Toggle Button */}
           <button
             className={`custom-toggler ${isNavOpen ? "open" : ""}`}
             onClick={() => setIsNavOpen(!isNavOpen)}
@@ -105,6 +110,7 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {/* Mobile Menu */}
       <div className={`mobile-menu ${isNavOpen ? "open" : ""}`}>
         <ul className="mobile-nav-list">
           {navLinks.map((label, index) => {
@@ -124,13 +130,16 @@ const Navbar = () => {
             );
           })}
         </ul>
+
         <div className="mob-email">
           <p>Get in touch</p>
           <a href="mailto:hey@byo.sa" className="view-btn">
             <span>hey@byo.sa</span>
           </a>
         </div>
+
         <SocialLinks classNames="nav-social" />
+
         <a href="#" className="mob-add view-btn">
           <span>{data?.address || "Loading address..."}</span>
         </a>
