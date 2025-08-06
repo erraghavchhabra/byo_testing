@@ -23,7 +23,11 @@ const ServiceSection = ({
       <div className="container">
         <div className="row">
           {/* ✅ Content Column */}
-          <div className={`col-lg-5 ${reverse ? "order-lg-2" : ""}`}>
+          <div
+            className={`col-lg-5 col-md-6 ${
+              reverse ? "order-md-2" : "order-md-1"
+            }`}
+          >
             <div className="serv-con">
               <h3 className="serv-h">{title}</h3>
               <p className="whitespace-pre-wrap">{description}</p>
@@ -36,7 +40,11 @@ const ServiceSection = ({
           </div>
 
           {/* ✅ Image Column */}
-          <div className={`col-lg-7 ${reverse ? "order-lg-1" : ""}`}>
+          <div
+            className={`col-lg-7 col-md-6 ${
+              reverse ? "order-md-1" : "order-md-2"
+            }`}
+          >
             <div
               className={`serv-img-box ${
                 reverse ? "serv-img-left" : "serv-img-right"

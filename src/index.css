@@ -138,9 +138,6 @@ a:hover {
   color: black; /* or your default */
 }
 
-
-
-
 .navbar.scrolled .desktop-menu .nav-link {
   color: #333;
 }
@@ -409,7 +406,57 @@ a:hover {
   width: 90%;
   margin-top: 30px;
 }
+/* about hero 2 */
+.hero-sec.inn-hero .hero-h{
+  z-index: 9;
+}
+.about-images {
+  position: absolute;
+  right: 0;
+  z-index: 5;
+  top: 0;
+  width: 35%;
+  height: 100%;
+  overflow: visible;
+}
 
+.about-images-inn {
+  position: relative;
+}
+
+.big-hemi {
+  display: block;
+  margin-top: 30px;
+  margin: 0 auto;
+  max-width: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.ball-1,
+.ball-2 {
+  position: absolute;
+  pointer-events: none;
+  transition: transform 0.3s ease-in-out;
+}
+
+.ball-1 {
+  width: 40px;
+  top: 20%;
+  right: 40%;
+}
+
+.ball-2 {
+  width: 60px;
+  top: 50%;
+  right: 20%;
+}
+
+.ball-shadow {
+  filter: drop-shadow(8px 8px 10px rgba(0, 0, 0, 0.25));
+}
+
+
+/* about hero 2 ends */
 .video-wrapper {
   text-align: center;
   margin-top: 00px;
@@ -1627,6 +1674,14 @@ a:hover {
 }
 
 @media (max-width: 992.2px) {
+  .serv-img-box.serv-img-left .serv-icon {
+    right: 0%;
+    width: 40%;
+  }
+  .serv-img-box .serv-icon{
+     left: 0%;
+    width: 40%;
+  }
   /* .client-ul li img {
     width: 100px;
   } */
@@ -1898,10 +1953,7 @@ a:hover {
   .serv-space {
     padding-top: 50px;
   }
-.serv-img-box .serv-icon{
-  position: relative;
-  left: -10%
-}
+  
   .serv-con .serv-h {
     font-size: 25px;
   }
@@ -1921,12 +1973,12 @@ a:hover {
   .serv-img-box {
     width: 100%;
   }
-.con-social{
-  display: none;
-}
-.cont-ul{
-  margin-bottom: 30px
-}
+  .con-social {
+    display: none;
+  }
+  .cont-ul {
+    margin-bottom: 30px;
+  }
   .industries {
     padding-top: 50px;
     padding-bottom: 50px;
@@ -1946,8 +1998,6 @@ a:hover {
     margin-top: 15px;
   }
 
- 
-
   .counter-box .counter-number {
     font-size: 50px;
   }
@@ -1960,9 +2010,9 @@ a:hover {
     padding-top: 50px;
     padding-bottom: 50px;
   }
-.why-box .img-x{
-  width: 60% !important
-}
+  .why-box .img-x {
+    width: 60% !important;
+  }
   .why-box .why-title {
     font-size: 28px;
   }
@@ -2087,8 +2137,8 @@ a:hover {
     animation: fadeSlide 0.3s ease;
   }
   .archive-ul li.expanded {
-  grid-column: 1 / -1; /* Force the LI itself to occupy full row */
-}
+    grid-column: 1 / -1; /* Force the LI itself to occupy full row */
+  }
   @keyframes fadeSlide {
     from {
       opacity: 0;
@@ -2105,11 +2155,11 @@ a:hover {
   }
   .testimonial-slide .test-con {
     width: 100%;
-}
-.container-fluid.image-wrapper{
-padding-left: 0px;
-padding-right: 0px;
-}
+  }
+  .container-fluid.image-wrapper {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -2117,15 +2167,19 @@ padding-right: 0px;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
   }
+  .serv-img-box .serv-icon {
+    position: relative;
+    left: -10%;
+  }
 }
 @media (max-width: 767.98px) {
   .serv-space .col-lg-7 {
-    order: 1 !important; 
+    order: 1 !important;
     padding-left: 0px;
-    padding-right: 0px
+    padding-right: 0px;
   }
-  .serv-con{
-    padding: 30px 10px
+  .serv-con {
+    padding: 30px 10px;
   }
   .serv-space .col-lg-5 {
     order: 2 !important;

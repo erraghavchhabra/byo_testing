@@ -192,6 +192,9 @@ export const homeProjectsQuery = `
     coverImage{
       asset->{url}
     },
+    project_categories[]{
+      name
+    },
     description,
   }
 `;
@@ -203,6 +206,9 @@ export const allProjectsQuery = `
       asset -> {
         url
       }
+    },
+    project_categories[]{
+      name
     },
     category->{
              name

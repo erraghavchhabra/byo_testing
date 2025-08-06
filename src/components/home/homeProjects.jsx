@@ -113,7 +113,7 @@ const HomeProjects = ({ data, showViewButton = true }) => {
   };
 
   const isDesktop = window.innerWidth >= 992;
-
+  console.log(19453, data);
   return (
     <>
       <section className="client-sec" ref={projectRef}>
@@ -121,7 +121,10 @@ const HomeProjects = ({ data, showViewButton = true }) => {
           <div className="row project-row">
             {data?.map((item, index) => (
               <div key={index} className="col-lg-6">
-                <Link to={`/work-detail/${item?.title}`} className="project-box">
+                <Link
+                  to={`/work-detail/${item?.title}`}
+                  className="project-box"
+                >
                   <div
                     className="project-img"
                     // ✅ Only enable hover events on desktop
@@ -172,13 +175,15 @@ const HomeProjects = ({ data, showViewButton = true }) => {
                     <p>{item?.title}</p>
                     {item?.description && (
                       <div className="pro-des">
-                        <span className="line-clamp-2">{item?.description}</span>
+                        <span className="line-clamp-2">
+                          {item?.description}
+                        </span>
                       </div>
                     )}
                     <ul className="tag-ul list-unstyled">
-                      <li>Web Design</li>
-                      <li>Enterprise</li>
-                      <li>Development</li>
+                      {item?.project_categories?.map((i, idx) => (
+                        <li key={idx}>{i?.name}</li>
+                      ))}
                     </ul>
                   </div>
                 </Link>

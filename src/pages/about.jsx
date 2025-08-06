@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AboutHero from "../components/aboutHero";
+import AboutHeroTwo from "../components/aboutHero2";
 import innAnimation from "../components/innAnimation";
 import Counter from "../components/counter";
 import HomeTransform from "../components/home/homeTransform";
@@ -14,6 +15,7 @@ const builder = imageUrlBuilder(sanityClient);
 export function urlFor(source) {
   return builder.image(source);
 }
+
 const About = () => {
   innAnimation();
   const [aboutData, setAboutData] = useState(null);
@@ -52,7 +54,7 @@ const About = () => {
 
   return (
     <>
-      <AboutHero aboutData={aboutData} />
+      <AboutHeroTwo aboutData={aboutData} />
       <Counter aboutData={aboutData} />
 
       <div className="container">
