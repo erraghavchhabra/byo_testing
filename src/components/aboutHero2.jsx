@@ -16,23 +16,16 @@ const AboutHero = ({ aboutData }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    // Hemisphere rotation
-  gsap.to(hemiRef.current, {
-  scale: 0.01,  
-  rotation: 360,
-  duration: 80,
-  repeat: -1,
-  yoyo: true, 
-  ease: "none",  
-  transformOrigin: "50% 50%",
-  onUpdate: function () {
-    const progress = this.progress();  
-    const scaleValue = progress * 10;
-    gsap.set(hemiRef.current, { scale: scaleValue }); 
-  },
-});
+ gsap.to(hemiRef.current, {
+      scale: 1.05,
+      rotation: 360,
+      duration: 80, // slower
+      repeat: -1,
+      ease: "linear",
+      transformOrigin: "50% 50%",
+    });
 
-    // Function to float balls fast and freely
+  
     const floatFreely = (target, range = 100, speed = 2) => {
       gsap.to(target, {
         x: () => gsap.utils.random(-range, range),
@@ -48,7 +41,7 @@ const AboutHero = ({ aboutData }) => {
       });
     };
 
-    // Fast floating balls 💨
+
     floatFreely(ball1Ref.current, 120, 1.8); // faster
     floatFreely(ball2Ref.current, 150, 2.2); // faster
   }, []);

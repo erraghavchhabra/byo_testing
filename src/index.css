@@ -427,6 +427,7 @@ a:hover {
 .big-hemi {
   display: block;
   margin-top: 30px;
+  transform-origin: 50% 50%;
   margin: 0 auto;
   max-width: 100%;
   transition: transform 0.5s ease-in-out;
