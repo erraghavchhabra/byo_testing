@@ -12,8 +12,10 @@ import PrivacyPolicy from "./pages/privacy";
 import TermsConditions from "./pages/TermsConditions";
 import WorkDetail from "./pages/workDetail";
 import ScrollToTop from "./components/ScrollToTop";
+import NewWork from "./pages/new_works/NewWork";
 import "aos/dist/aos.css"; // Import AOS CSS
 import AOS from "aos"; // Import AOS JS
+import NewWorksDetail from "./pages/new_works/NewWorksDetail";
 function App() {
   return (
     <BrowserRouter>
@@ -22,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/work" element={<Work />} />
+        <Route path="/newwork" element={<NewWork />} />
         <Route path="/clients" element={<Clients />} />
         <Route path="/services" element={<Services />} />
         <Route path="/about" element={<About />} />
@@ -29,6 +32,7 @@ function App() {
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/work-detail/:title" element={<WorkDetail />} />
+        <Route path="/new-work-detail/:slug" element={<NewWorksDetail />} />
       </Routes>
       <Footer />
     </BrowserRouter>

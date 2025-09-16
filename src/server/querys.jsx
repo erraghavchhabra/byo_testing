@@ -307,3 +307,63 @@ export const singleProjectQuery = `
       }
     }
   `;
+export const allNewProjectsQuery = `
+*[_type == "newProjects"]{
+  _id,
+  title,
+  slug { current },
+  category -> { name },
+  isFeatured,
+  "coverUrl": coalesce(blocks[_type == "heroBlock"][0].media.asset->url, null),
+  "coverExt":coalesce(blocks[_type == "heroBlock"][0].media.asset->extension, null),
+}
+`;
+
+export const NewprojectDetailQuery = (slug) => `
+  *[_type == "newProjects" && slug.current == "${slug}"][0]{
+    _id,
+    title,
+    slug,
+    "category": category->name,
+    blocks[]{
+      _type,
+      ...,
+      // agar media asset hai to URL fetch karo
+      _type == "heroBlock" => {
+        "mediaUrl": media.asset->url,
+         "mediaExt": media.asset->extension
+      },
+      _type == "fullWidthMediaBlock" => {
+        "mediaUrl": media.asset->url,
+        "mediaExt": media.asset->extension
+      },
+      _type == "imageGridBlock" => {
+        images[]{ "url": asset->url, caption }
+      },
+      _type == "textMediaBlock" => {
+        text,
+        "mediaUrl": media.asset->url,
+        mediaPosition
+      },
+      _type == "sliderBlock" => {
+        slides[]{
+          "url": asset->url
+        }
+      },
+      _type == "quoteBlock" => {
+        quotes[] {
+          author,
+          position,
+          quote,
+          "imageUrl": image.asset->url
+        }
+      },
+      _type == "embedBlock" => {
+        embedCode
+      },
+      _type == "statsBlock" => {
+        stats[]{ label, value }
+      }
+    }
+  }
+`;

@@ -15,7 +15,7 @@ const Navbar = () => {
   const ticking = useRef(false);
   const location = useLocation();
 
-  const navLinks = ["Work", "Clients", "Services", "About", "Contact"];
+  const navLinks = ["Work","NewWork", "Clients", "Services", "About", "Contact"];
   const isAboutPage = location.pathname === "/about"; // ✅ detect about page
 
   useEffect(() => {

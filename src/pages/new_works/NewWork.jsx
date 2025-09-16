@@ -1,0 +1,110 @@
+import React, { useEffect, useState } from "react";
+// import Archive from "../components/Archive";
+import { allCategoriesQuery, allNewProjectsQuery } from "../../server/querys";
+import useInnAnimation from "../../components/innAnimation";
+import sanityClient from "../../server/sanityClient";
+import HomeProjects from "../../components/newprojects/homeProjects";
+const NewWork = () => {
+  const [activeTab, setActiveTab] = useState("all");
+  const [allCategories, setAllCategories] = useState([]);
+  const [allProjects, setAllProjects] = useState([]);
+  const [projects, setProjects] = useState([]);
+
+  useInnAnimation();
+
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      const data = await sanityClient.fetch(allCategoriesQuery);
+      console.log("cate", data);
+      setAllCategories(data);
+    };
+
+    fetchGalleryImages();
+  }, []);
+
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      const data = await sanityClient.fetch(allNewProjectsQuery);
+      console.log("projects", data);
+      setAllProjects(data);
+    };
+
+    fetchGalleryImages();
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === "all") {
+      setProjects(allProjects);
+    } else {
+      const filteredProjects = allProjects.filter(
+        (project) => project.category?.name === activeTab
+      );
+      setProjects(filteredProjects);
+    }
+  }, [activeTab, allProjects]);
+
+  return (
+    <>
+      <section className="inner-sec">
+        <div className="container inn-container">
+          <div className="row">
+            <div className="col-lg-4">
+              <h1 className="inn-title">Projects</h1>
+              <p className="inn-p">
+                Our team helps companies develop their ideas into cutting-edge
+                products that will cause customers to love and enjoy.
+              </p>
+            </div>
+            <div className="col-lg-8 align-items-end">
+              <div className="nav-holder">
+                <ul className="nav m-nav-tabs nav-tabs" id="workTabs">
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "all" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("all")}
+                    >
+                      All Work <sup>{allProjects.length}</sup>
+                    </button>
+                  </li>
+                  {allCategories?.map((category, index) => {
+                    const categoryCount = allProjects.filter(
+                      (project) => project.category?.name === category?.name
+                    ).length;
+
+                    return (
+                      <li key={index} className="nav-item">
+                        <button
+                          className={`nav-link ${
+                            activeTab === category?.name ? "active" : ""
+                          }`}
+                          onClick={() => setActiveTab(category?.name)}
+                        >
+                          {category?.name} <sup>{categoryCount}</sup>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="tab-content mt-3">
+          <HomeProjects data={projects} showViewButton={false} />
+        </div>
+      </section>
+
+      {/* <section className="archive-sec">
+        <div className="container">
+          <h2 className="archive-title">Archive</h2>
+          <Archive projects={allProjects} />
+        </div>
+      </section> */}
+    </>
+  );
+};
+
+export default NewWork;
