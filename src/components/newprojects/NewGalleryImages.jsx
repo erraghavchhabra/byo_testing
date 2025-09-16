@@ -90,27 +90,61 @@ const NewGalleryImages = ({ images }) => {
         <div className="row g-3">
           {images.map((img, i) => (
             <div
-              className={`col-12 ${
-                images.length === 1 ? "col-lg-12" : "col-sm-6 col-md-6 col-lg-6"
-              }`}
+              className={`col-12 ${images.length === 1 ? "col-lg-12" : "col-sm-6 col-md-6 col-lg-6"
+                }`}
               key={i}
             >
               <div
-                className="border rounded shadow-sm h-100 position-relative"
+                className="rounded shadow-lg h-100 position-relative overflow-hidden"
                 style={{ cursor: "pointer" }}
                 onClick={() => open(img?.url)}
               >
-                <img
-                  src={img?.url}
-                  alt={`Gallery ${i + 1}`}
-                  className="img-fluid pro-img w-100"
-                />
+                {/* Background Blur */}
+                <div
+                  className="position-absolute top-0 start-0 w-100 h-100"
+                  style={{
+                    backgroundImage: `url(${img?.url})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    filter: "blur(25px) brightness(0.6)",
+                    transform: "scale(1.2)",
+                  }}
+                ></div>
+
+                {/* Overlay dark gradient */}
+                <div
+                  className="position-absolute top-0 start-0 w-100 h-100"
+                  style={{
+                    background:
+                      "linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6))",
+                    zIndex: 1,
+                  }}
+                ></div>
+
+                {/* Foreground Image */}
+                <div className="position-relative d-flex align-items-center justify-content-center h-100">
+                  <img
+                    src={img?.url}
+                    alt={`Gallery ${i + 1}`}
+                    className="img-fluid pro-img"
+                    style={{
+                      objectFit: "contain",
+                      zIndex: 2,
+                      transition: "transform 0.4s ease",
+                    }}
+                  />
+                </div>
+
+                {/* Caption */}
                 {img.caption && (
                   <div
-                    className="position-absolute bottom-0 start-0 w-100 text-white px-2 py-1"
+                    className="position-absolute bottom-0 start-0 w-100 text-white px-3 py-2"
                     style={{
                       background:
-                        "linear-gradient(to top, rgba(0,0,0,0.6), transparent)",
+                        "linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0,0,0,0.3))",
+                      fontSize: "0.95rem",
+                      fontWeight: "500",
+                      zIndex: 3,
                     }}
                   >
                     {img.caption}
@@ -121,6 +155,8 @@ const NewGalleryImages = ({ images }) => {
           ))}
         </div>
       </div>
+
+
 
       <AnimatePresence>
         {selected && (

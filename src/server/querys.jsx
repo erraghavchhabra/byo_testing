@@ -358,11 +358,16 @@ export const NewprojectDetailQuery = (slug) => `
           "imageUrl": image.asset->url
         }
       },
+      _type == "multiImageSliderBlock" => {
+        slides[]{ "url": asset->url },
+        autoplay,
+        desktopSlides
+      },
       _type == "embedBlock" => {
         embedCode
       },
       _type == "statsBlock" => {
-        stats[]{ label, value }
+        stats[]
       }
     }
   }

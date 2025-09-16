@@ -407,7 +407,7 @@ a:hover {
   margin-top: 30px;
 }
 /* about hero 2 */
-.hero-sec.inn-hero .hero-h{
+.hero-sec.inn-hero .hero-h {
   z-index: 9;
 }
 .about-images {
@@ -455,7 +455,6 @@ a:hover {
 .ball-shadow {
   filter: drop-shadow(8px 8px 10px rgba(0, 0, 0, 0.25));
 }
-
 
 /* about hero 2 ends */
 .video-wrapper {
@@ -1638,7 +1637,67 @@ a:hover {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.ms-richtxt {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.ms-richtxt h2,
+.ms-richtxt h3 {
+  font-size: 50px;
+  font-weight: 600;
+}
+.ms-richtxt p {
+  font-size: 20px;
+}
+.ms-richtxt ul {
+  margin-bottom: 20px;
+}
+.ms-richtxt ul li {
+  font-size: 18px;
+}
+.video-embed-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
 
+.video-embed-wrapper iframe {
+  display: block;
+  width: 100%;
+  border: none;
+}
+.counter-card {
+  background: linear-gradient(145deg, #f9f9f9, #f6f1f1);
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgb(0 0 0 / 5%);
+  transition: transform 0.3s ease;
+  padding: 20px;
+  width: 100%
+}
+
+.counter-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 30px rgba(75, 75, 75, 0.1);
+}
+
+.counter {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.counter .title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ccc;
+}
+
+.counter .description {
+  font-size: 0.95rem;
+  color: #aaa;
+}
 /* MEDIA QUERIES */
 @media (min-width: 1200px) {
   .container,
@@ -1679,8 +1738,8 @@ a:hover {
     right: 0%;
     width: 40%;
   }
-  .serv-img-box .serv-icon{
-     left: 0%;
+  .serv-img-box .serv-icon {
+    left: 0%;
     width: 40%;
   }
   /* .client-ul li img {
@@ -1954,7 +2013,7 @@ a:hover {
   .serv-space {
     padding-top: 50px;
   }
-  
+
   .serv-con .serv-h {
     font-size: 25px;
   }
